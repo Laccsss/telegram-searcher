@@ -37,6 +37,7 @@ body {
     color: var(--text-color);
     background-color: var(--bg-color);
     transition: background-color 0.3s, color 0.3s;
+    overflow-x: hidden;
 }
 
 .container {
@@ -268,4 +269,14 @@ footer a:hover {
 .no-results p {
     color: var(--text-color);
     opacity: 0.8;
+}
+
+/* Hide scrollbars when in iframe */
+html {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+html::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
 } 
