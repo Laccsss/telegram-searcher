@@ -29,6 +29,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    max-width: 100%;
 }
 
 body {
@@ -38,12 +39,19 @@ body {
     background-color: var(--bg-color);
     transition: background-color 0.3s, color 0.3s;
     overflow-x: hidden;
+    min-height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
+    width: 100%;
+    max-width: 100%;
+    min-height: 100vh;
 }
 
 header {
@@ -62,6 +70,7 @@ h1 {
     max-width: 600px;
     margin: 0 auto;
     align-items: center;
+    width: 100%;
 }
 
 input[type="text"],
@@ -75,6 +84,7 @@ textarea {
     width: 100%;
     background-color: var(--card-bg);
     color: var(--text-color);
+    max-width: 100%;
 }
 
 input:focus,
@@ -101,6 +111,8 @@ select {
     padding: 1.5rem;
     box-shadow: 0 2px 4px var(--shadow-color);
     transition: transform 0.2s, box-shadow 0.2s;
+    margin: 0;
+    width: 100%;
 }
 
 .channel-card:hover {
@@ -279,4 +291,55 @@ html {
 
 html::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera */
+}
+
+/* Mobile and iframe responsiveness */
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 1rem;
+        width: 100%;
+    }
+
+    .channels-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .search-container {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .channel-card {
+        padding: 1rem;
+        margin: 0;
+        width: 100%;
+    }
+}
+
+/* Iframe specific styles */
+.container {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100vh;
+}
+
+body {
+    min-height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+}
+
+/* Ensure content fits within viewport */
+* {
+    max-width: 100%;
+}
+
+input[type="text"],
+input[type="url"],
+select,
+textarea {
+    max-width: 100%;
+    width: 100%;
 } 
