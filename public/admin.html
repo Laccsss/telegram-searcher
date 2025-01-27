@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Telegram Channel Search</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Admin Panel</h1>
+            <a href="/" class="back-link">← Back to Search</a>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search channels...">
+                <select id="categoryFilter">
+                    <option value="">All Categories</option>
+                </select>
+            </div>
+        </header>
+
+        <main>
+            <form id="channelForm" class="admin-form">
+                <h2 id="formTitle">Add New Channel</h2>
+                <input type="hidden" id="editIndex" value="">
+                <div class="form-group">
+                    <label for="name">Channel Name:</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="link">Channel Link:</label>
+                    <input type="url" id="link" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">Categories (comma-separated):</label>
+                    <input type="text" id="category" placeholder="news, tech, programming">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description"></textarea>
+                </div>
+                <div class="button-group">
+                    <button type="submit" id="submitBtn">Add Channel</button>
+                    <button type="button" id="cancelBtn" style="display: none;">Cancel</button>
+                </div>
+            </form>
+
+            <div class="channels-list">
+                <h2>Existing Channels</h2>
+                <div id="adminChannelsList"></div>
+            </div>
+        </main>
+    </div>
+    <script src="admin.js"></script>
+</body>
+</html> 

@@ -1,0 +1,10 @@
+{
+  "channels": [
+    {
+      "name": "Sample Tech Channel",
+      "link": "https://t.me/sampletech",
+      "categories": ["tech", "programming"],
+      "description": "A channel about technology and programming"
+    }
+  ]
+} 
