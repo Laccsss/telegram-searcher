@@ -1,9 +1,25 @@
 [build]
   publish = "."
 
+[[headers]]
+  for = "/data/*"
+    [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "no-cache"
+
 [[redirects]]
   from = "/admin"
   to = "/admin.html"
+  status = 200
+
+[[redirects]]
+  from = "/"
+  to = "/public/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/data/*"
+  to = "/data/:splat"
   status = 200
 
 [[redirects]]

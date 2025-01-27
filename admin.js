@@ -13,7 +13,6 @@ function checkAuth() {
 // Login function
 function login() {
     const password = document.getElementById('password').value;
-    // You should change this password
     if (password === 'Viktor123') {
         localStorage.setItem('adminAuthenticated', 'true');
         showAdminPanel();
@@ -32,8 +31,12 @@ function showAdminPanel() {
 // Fetch and display channels
 async function fetchChannels() {
     try {
-        const response = await fetch('/data/channels.json');
-        channels = await response.json();
+        const response = await fetch('/data/channels.json?' + new Date().getTime());
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        channels = data.channels;
         
         // Update categories
         categories = new Set(channels.flatMap(channel => channel.categories || []));
@@ -43,6 +46,7 @@ async function fetchChannels() {
         filterChannels();
     } catch (error) {
         console.error('Error fetching channels:', error);
+        alert('Failed to load channels. Error: ' + error.message);
     }
 }
 
@@ -158,59 +162,59 @@ async function handleSubmit(event) {
     const channelData = {
         name: form.name.value,
         link: form.link.value,
-        category: form.category.value,
+        categories: form.category.value.split(',').map(cat => cat.trim()).filter(Boolean),
         description: form.description.value
     };
 
-    try {
-        const index = form.editIndex.value;
-        const method = isEditing ? 'PUT' : 'POST';
-        const url = isEditing ? `/api/channels/${index}` : '/api/channels';
-
-        const response = await fetch(url, {
-            method,
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(channelData)
-        });
-
-        if (response.ok) {
-            form.reset();
-            if (isEditing) {
-                cancelEdit();
-            }
-            await fetchChannels();
-        } else {
-            const error = await response.json();
-            alert(error.error || `Failed to ${isEditing ? 'update' : 'add'} channel`);
-        }
-    } catch (error) {
-        console.error(`Error ${isEditing ? 'updating' : 'adding'} channel:`, error);
-        alert(`Failed to ${isEditing ? 'update' : 'add'} channel`);
+    if (isEditing) {
+        const index = parseInt(form.editIndex.value);
+        channels[index] = channelData;
+    } else {
+        channels.push(channelData);
     }
+
+    // Download the updated channels.json file
+    const blob = new Blob([JSON.stringify({ channels: channels }, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'channels.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    alert('The channels.json file has been downloaded. To update the site:\n1. Replace the data/channels.json file in your repository\n2. Commit and push the changes\n3. Netlify will automatically redeploy with the new channels');
+
+    form.reset();
+    if (isEditing) {
+        cancelEdit();
+    }
+    displayChannels();
 }
 
 // Delete channel
-async function deleteChannel(index) {
+function deleteChannel(index) {
     if (!confirm('Are you sure you want to delete this channel?')) {
         return;
     }
 
-    try {
-        const response = await fetch(`/api/channels/${index}`, {
-            method: 'DELETE'
-        });
+    channels.splice(index, 1);
+    
+    // Download the updated channels.json file
+    const blob = new Blob([JSON.stringify({ channels: channels }, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'channels.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 
-        if (response.ok) {
-            await fetchChannels();
-        } else {
-            alert('Failed to delete channel');
-        }
-    } catch (error) {
-        console.error('Error deleting channel:', error);
-        alert('Failed to delete channel');
-    }
+    alert('The channels.json file has been downloaded. To update the site:\n1. Replace the data/channels.json file in your repository\n2. Commit and push the changes\n3. Netlify will automatically redeploy with the new channels');
+
+    displayChannels();
 }
 
 // Helper function to escape HTML
@@ -229,5 +233,5 @@ document.getElementById('cancelBtn').addEventListener('click', cancelEdit);
 document.getElementById('searchInput').addEventListener('input', filterChannels);
 document.getElementById('categoryFilter').addEventListener('change', filterChannels);
 
-// Initial load
+// Initialize
 checkAuth(); 
