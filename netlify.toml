@@ -24,10 +24,9 @@
   status = 200
   force = true
 
-# Only redirect to index.html if the path doesn't match a static file
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
   force = true
-  conditions = {Response} = [404] 
+  conditions = {Response = 404} 
