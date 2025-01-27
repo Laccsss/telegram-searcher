@@ -2,10 +2,37 @@ let channels = [];
 let isEditing = false;
 let categories = new Set();
 
+// Check if already authenticated
+function checkAuth() {
+    const isAuthenticated = localStorage.getItem('adminAuthenticated');
+    if (isAuthenticated === 'true') {
+        showAdminPanel();
+    }
+}
+
+// Login function
+function login() {
+    const password = document.getElementById('password').value;
+    // You should change this password
+    if (password === 'Viktor123') {
+        localStorage.setItem('adminAuthenticated', 'true');
+        showAdminPanel();
+    } else {
+        alert('Invalid password');
+    }
+}
+
+// Show admin panel
+function showAdminPanel() {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'block';
+    fetchChannels();
+}
+
 // Fetch and display channels
 async function fetchChannels() {
     try {
-        const response = await fetch('/api/channels');
+        const response = await fetch('/data/channels.json');
         channels = await response.json();
         
         // Update categories
@@ -203,4 +230,4 @@ document.getElementById('searchInput').addEventListener('input', filterChannels)
 document.getElementById('categoryFilter').addEventListener('change', filterChannels);
 
 // Initial load
-fetchChannels(); 
+checkAuth(); 

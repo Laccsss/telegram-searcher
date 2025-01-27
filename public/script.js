@@ -16,7 +16,7 @@ function toggleTheme() {
 // Fetch channels from the static JSON file
 async function fetchChannels() {
     try {
-        const response = await fetch('/channels.json');
+        const response = await fetch('/data/channels.json');
         const data = await response.json();
         channels = data.channels;
         filterChannels();
