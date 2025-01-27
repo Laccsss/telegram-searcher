@@ -2,6 +2,12 @@
   publish = "public"
 
 [[headers]]
+  for = "/*"
+    [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+
+[[headers]]
   for = "/data/*"
     [headers.values]
     Access-Control-Allow-Origin = "*"
@@ -18,8 +24,10 @@
   status = 200
   force = true
 
+# Only redirect to index.html if the path doesn't match a static file
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  force = true 
+  force = true
+  conditions = {Response} = [404] 
