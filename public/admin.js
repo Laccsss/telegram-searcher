@@ -73,8 +73,6 @@ function filterChannels() {
         const matchesSearch = 
             // Check channel name
             channel.name.toLowerCase().includes(searchTerm) ||
-            // Check description
-            (channel.description && channel.description.toLowerCase().includes(searchTerm)) ||
             // Check categories
             (channel.categories && channel.categories.some(cat => 
                 cat.toLowerCase().includes(searchTerm)

@@ -85,7 +85,6 @@ function filterChannels() {
     
     const filtered = channels.filter(channel => {
         return channel.name.toLowerCase().includes(searchTerm) ||
-               (channel.description && channel.description.toLowerCase().includes(searchTerm)) ||
                (channel.categories && channel.categories.some(cat => 
                    cat.toLowerCase().includes(searchTerm)
                ));
