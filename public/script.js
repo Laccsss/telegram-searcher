@@ -1,18 +1,5 @@
 let channels = [];
 
-// Theme handling
-function initTheme() {
-    const theme = localStorage.getItem('theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', theme);
-}
-
-function toggleTheme() {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-}
-
 // Fetch channels from the static JSON file
 async function fetchChannels() {
     try {
@@ -95,8 +82,6 @@ function filterChannels() {
 
 // Event listeners
 document.getElementById('searchInput').addEventListener('input', filterChannels);
-document.getElementById('themeToggle').addEventListener('click', toggleTheme);
 
 // Initialize
-initTheme();
 fetchChannels(); 
